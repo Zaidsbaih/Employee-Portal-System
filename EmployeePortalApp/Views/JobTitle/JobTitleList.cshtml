@@ -1,0 +1,65 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<JobTitleModel>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>
+        Departments List
+    </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+</head>
+<body>
+    <div class="container mt-5">
+
+        <div class="card shadow-lg">
+
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Departments List</h3>
+            </div>
+
+            <div class="card-body">
+                <form method="post">
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Departments Name</th>
+                            <th width="180">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (JobTitleModel job in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @job.Title
+                                </td>
+                                <td>
+
+                                        <input type="submit" value="Edit" asp-action="EditJobTitle" asp-route-id="@job.Id" class="btn btn-warning btn-sm " />
+
+                                    <input type="submit" value="Delete" asp-action="DeleteJobTitle" asp-route-id="@job.Id" class="btn btn-danger btn-sm" />
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+
+                </table>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

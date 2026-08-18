@@ -1,0 +1,198 @@
+﻿@model PolicyModel
+
+@{
+    ViewData["Title"] = "Policy";
+
+    // حط Layout الأدمن الموجود عندك
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-dark text-white p-3">
+            @if (ViewBag.IsEdit == true)
+            {
+                <h4 class="mb-0">
+                    Edit Policy
+                </h4>
+            }
+            else
+            {
+                <h4 class="mb-0">
+                    Create New Policy
+                </h4>
+            }
+        </div>
+
+        <div class="card-body p-4">
+
+            <form asp-controller="Policy"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <!-- مهم للـ Update -->
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div class="row">
+
+                    <!-- Title -->
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Title"
+                               class="form-label">
+                            Policy Title
+                        </label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               placeholder="Enter policy title" />
+
+                        <span asp-validation-for="Title"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Category -->
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Category"
+                               class="form-label">
+                            Category
+                        </label>
+
+                        <select asp-for="Category"
+                                class="form-select">
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="HR">
+                                HR
+                            </option>
+
+                            <option value="Attendance">
+                                Attendance
+                            </option>
+
+                            <option value="Leave">
+                                Leave
+                            </option>
+
+                            <option value="Security">
+                                Security
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Category"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Description -->
+                <div class="mb-3">
+
+                    <label asp-for="Description"
+                           class="form-label">
+                        Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Enter policy description">
+                    </textarea>
+
+                </div>
+
+
+                <!-- PDF -->
+                <div class="mb-3">
+
+                    <label asp-for="PdfFile"
+                           class="form-label">
+                        Policy PDF
+                    </label>
+
+                    <input asp-for="PdfFile"
+                           type="file"
+                           accept=".pdf"
+                           class="form-control" />
+
+                    @if (ViewBag.IsEdit == true &&
+                         !string.IsNullOrEmpty(Model.FilePath))
+                    {
+                        <small class="text-muted">
+                            Leave this empty to keep the current PDF.
+                        </small>
+                    }
+
+                </div>
+
+
+                <!-- Active -->
+                <div class="form-check form-switch mb-4">
+
+                    <input asp-for="IsActive"
+                           class="form-check-input"
+                           type="checkbox" />
+
+                    <label asp-for="IsActive"
+                           class="form-check-label">
+                        Active Policy
+                    </label>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="text-end">
+
+                    <a asp-controller="Policy"
+                       asp-action="PolicyList"
+                       class="btn btn-outline-secondary me-2">
+                        Cancel
+                    </a>
+
+                    @if (ViewBag.IsEdit == true)
+                    {
+                        <button type="submit"
+                                asp-action="UpdatePolicy"
+                                class="btn btn-warning px-4">
+
+                            <i class="bi bi-pencil-square me-1"></i>
+                            Update Policy
+
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit"
+                                asp-action="SavePolicy"
+                                class="btn btn-dark px-4">
+
+                            <i class="bi bi-plus-circle me-1"></i>
+                            Create Policy
+
+                        </button>
+                    }
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

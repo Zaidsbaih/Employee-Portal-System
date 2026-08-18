@@ -1,0 +1,42 @@
+﻿@model Login_EmpModel
+<!doctype html>
+    <head>
+        <title>
+            Login
+        </title>
+        
+    </head>
+    <body>
+    <div class="container vh-100 d-flex justify-content-center align-items-center">
+
+        <div class="card shadow p-4" style="width: 400px;">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">
+                    Employee Portal Login
+                </h3>
+                <form asp-action="Login"  method="post">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                <input type="email" class="form-control" asp-for="Email" placeholder="name@example.com">
+            </div>
+            <label for="inputPassword5" class="form-label">Password</label>
+            <input type="password" asp-for="Password" class="form-control" aria-describedby="passwordHelpBlock">
+            <div class="mt-2 text-start">
+                        <a asp-controller="Employee"
+                           asp-action="ForgotPassword"
+                           class="small">
+                    Forgot Password?
+                </a>
+
+            </div>
+                <div class="text-center m-3 ">
+                    <input class="btn btn-primary w-100" type="submit" value="Login">
+                </div>
+                
+                </form>
+            </div>
+        </div>
+
+    </div>
+    </body>
+</html>

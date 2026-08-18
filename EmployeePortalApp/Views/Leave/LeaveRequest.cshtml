@@ -1,0 +1,294 @@
+﻿@model LeaveRequestVM
+
+@{
+    ViewData["Title"] = "Leave Request";
+    Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+}
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h2 class="fw-bold mb-1">
+            Leave Request
+        </h2>
+
+        <p class="text-muted">
+            Submit and track your leave requests.
+        </p>
+    </div>
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <h5 class="mb-4">
+                Submit Leave Request
+            </h5>
+            <form asp-controller="Leave" method="post">
+                <input type="hidden"
+                       asp-for="LeaveRequest.Id" />
+                <div class="mb-3">
+
+                    <label asp-for="LeaveRequest.LeaveType"
+                           class="form-label">
+                        Leave Type
+                    </label>
+
+                    <select asp-for="LeaveRequest.LeaveType"
+                            class="form-select">
+
+                        <option value="">
+                            Select Leave Type
+                        </option>
+
+                        <option value="Annual Leave">
+                            Annual Leave
+                        </option>
+
+                        <option value="Sick Leave">
+                            Sick Leave
+                        </option>
+
+                        <option value="Unpaid Leave">
+                            Unpaid Leave
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="LeaveRequest.LeaveType"
+                          class="text-danger">
+                    </span>
+                    
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="LeaveRequest.StartDate"
+                               class="form-label">
+                            Start Date
+                        </label>
+
+                        <input asp-for="LeaveRequest.StartDate"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="LeaveRequest.StartDate"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="LeaveRequest.EndDate"
+                               class="form-label">
+                            End Date
+                        </label>
+
+                        <input asp-for="LeaveRequest.EndDate"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="LeaveRequest.EndDate"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+                <div class="mb-3">
+
+                    <label asp-for="LeaveRequest.Reason"
+                           class="form-label">
+                        Reason
+                    </label>
+
+                    <textarea asp-for="LeaveRequest.Reason"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Enter your reason">
+    </textarea>
+
+                    <span asp-validation-for="LeaveRequest.Reason"
+                          class="text-danger">
+                    </span>
+
+                </div>
+                <div class="text-end">
+
+                    @if (ViewBag.IsEdit == true)
+                    {
+                        <button type="submit"
+                                asp-action="UpdateLeave"
+                                class="btn btn-warning px-4">
+
+                            Update Leave
+
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit"
+                                asp-action="SubmitLeave"
+                                class="btn btn-primary px-4">
+
+                            Submit Request
+
+                        </button>
+                    }
+
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+    <!-- My Leave History -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 p-4 pb-0">
+
+            <div>
+                <h5 class="mb-1">
+                    My Leave History
+                </h5>
+
+                <small class="text-muted">
+                    View your previous leave requests and their status.
+                </small>
+            </div>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Leave Type</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Manager Comment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (LeaveRequestModel leave in Model.MyLeaves)
+                        {
+                            <tr>
+
+                                <td>
+                                    @leave.LeaveType
+                                </td>
+
+                                <td>
+                                    @leave.StartDate.ToString("dd MMMM yyyy")
+                                </td>
+
+                                <td>
+                                    @leave.EndDate.ToString("dd MMMM yyyy")
+                                </td>
+
+                                <td>
+                                    @leave.Reason
+                                </td>
+
+                                <td>
+
+                                    @if (leave.Status == "Pending")
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            Pending
+                                        </span>
+                                    }
+                                    else if (leave.Status == "Approved")
+                                    {
+                                        <span class="badge bg-success">
+                                            Approved
+                                        </span>
+                                    }
+                                    else if (leave.Status == "Rejected")
+                                    {
+                                        <span class="badge bg-danger">
+                                            Rejected
+                                        </span>
+                                    }
+                                    else if (leave.Status == "Cancelled")
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Cancelled
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td>
+                                    @if (string.IsNullOrEmpty(leave.ManagerComment))
+                                    {
+                                        <span>-</span>
+                                    }
+                                    else
+                                    {
+                                        @leave.ManagerComment
+                                    }
+                                </td>
+
+                                <td>
+
+                                    @if (leave.Status == "Pending")
+                                    {
+                                        <a asp-controller="Leave"
+                                           asp-action="EditLeave"
+                                           asp-route-id="@leave.Id"
+                                           class="btn btn-warning btn-sm">
+
+                                            Edit
+
+                                        </a>
+
+                                        <form asp-controller="Leave"
+                                              asp-action="CancelLeave"
+                                              method="post"
+                                              class="d-inline">
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@leave.Id" />
+
+                                            <button type="submit"
+                                                    class="btn btn-danger btn-sm">
+
+                                                Cancel
+
+                                            </button>
+
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            No Actions
+                                        </span>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model EmployeePortalApp.Models.JobTitleModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+<!doctype html>
+<head>
+    <title>
+        New Job Title 
+    </title>
+
+</head>
+<body>
+
+    <div class="container vh-100 d-flex justify-content-center align-items-center">
+
+        <div class="card shadow p-4" style="width: 700px;">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">
+                    Create New Job Title
+                </h3>
+                <form asp-controller="JobTitle" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id"/>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Job Title Name</label>
+                        <input type="text" class="form-control" name="Title" asp-for="Title" placeholder="Enter Job Title name ">
+                    </div>
+
+                    <div class="text-center mt-4">
+                        @if(!ViewBag.IsEdit)
+                        {
+                            <input type="submit" value="Save" class="btn btn-primary px-5" asp-action="SaveJobTitle"/>
+                        }
+                        else
+                        {
+                            <input type="submit" value="Udpate" class="btn btn-primary px-5" asp-action="UpdateJobTitle" />
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+

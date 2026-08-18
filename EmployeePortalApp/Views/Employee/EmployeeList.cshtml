@@ -1,0 +1,120 @@
+﻿@model List<EmployeeModel>
+
+<!DOCTYPE html>
+<html >
+    <head>
+        <meta name="viewport" content="width=device-width"/>
+        <title>
+            EmployeeList
+        </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        
+    </head>
+    <body>
+        <form action="SearchEmployee" method="post">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-auto">
+                    <input type="text" class="form-control" name="textEmployeeName" placeholder="Employee Name" />
+            </div>
+            <div class="col-auto">
+                    <input type="text" class="form-control" name="textEmployeePhone" placeholder="Employee Phone" />
+            </div>
+            <div class="col-auto">
+                <input type="submit" value = "Search" class="btn btn-primary"  />
+            </div>
+        </div>
+            <div class="mt-4">
+        <div class="card shadow-lg">
+                
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Employee List</h3>
+            </div>
+                
+            <div class="card-body">
+
+                    
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Photo</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Department</th>
+                            <th>Job Title</th>
+                            <th>Manager Name</th>
+                            <th>Status</th>
+                            <th width="180">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var emp in Model)
+                        {
+                            <tr>
+
+                                <td>@emp.Photo</td>
+
+                                <td>@emp.FullName</td>
+
+                                <td>@emp.Email</td>
+
+                                <td>@emp.Phone</td>
+
+                                <td>@emp.DepartmentName</td>
+
+                                <td>@emp.JobTitleName</td>
+
+                                <td>@emp.ManagerName</td>
+
+                                <td>
+
+                                    @if (emp.IsActive)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Inactive</span>
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    <a asp-action="EditEmployee"
+                                       asp-route-id="@emp.Id"
+                                       class="btn btn-warning btn-sm">
+
+                                        Edit
+
+                                    </a>
+
+                                    <a asp-action="DeleteEmployee"
+                                       asp-route-id="@emp.Id"
+                                       class="btn btn-danger btn-sm">
+
+                                        Delete
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+                    </div>
+            </div>
+
+        </div>
+
+    </div>
+    </form>
+</body>
+</html>

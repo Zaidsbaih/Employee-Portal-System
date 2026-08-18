@@ -1,0 +1,157 @@
+﻿@model List<HolidayModel>
+
+@{
+    ViewData["Title"] = "Holiday List";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+
+    <div class="container mt-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h2 class="mb-0">
+                Holidays List
+            </h2>
+
+            <a asp-controller="Holiday"
+               asp-action="NewHoliday"
+               class="btn btn-primary">
+
+                Add New Holiday
+
+            </a>
+
+        </div>
+
+        <div class="card shadow border-0">
+
+            <div class="card-body">
+
+                @if (Model == null || Model.Count == 0)
+                {
+                    <div class="alert alert-info mb-0">
+                        No holidays have been added yet.
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-hover align-middle">
+
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Holiday Name</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th style="width: 180px;">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (HolidayModel holiday in Model)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @holiday.Name
+                                        </td>
+
+                                        <td>
+                                            @holiday.StartDate.ToString("dd/MM/yyyy")
+                                        </td>
+
+                                        <td>
+                                            @holiday.EndDate.ToString("dd/MM/yyyy")
+                                        </td>
+
+                                        <td>
+                                            @if (string.IsNullOrWhiteSpace(holiday.Description))
+                                            {
+                                                <span>-</span>
+                                            }
+                                            else
+                                            {
+                                                @holiday.Description
+                                            }
+                                        </td>
+
+                                        <td>
+                                            @if (holiday.IsActive)
+                                            {
+                                                <span class="badge bg-success">
+                                                    Active
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">
+                                                    Inactive
+                                                </span>
+                                            }
+                                        </td>
+
+                                        <td>
+
+                                            <a asp-controller="Holiday"
+                                               asp-action="EditHoliday"
+                                               asp-route-id="@holiday.Id"
+                                               class="btn btn-warning btn-sm">
+
+                                                Edit
+
+                                            </a>
+
+                                            <form asp-controller="Holiday"
+                                                  asp-action="DeleteHoliday"
+                                                  method="post"
+                                                  class="d-inline">
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@holiday.Id" />
+
+                                                <button type="submit"
+                                                        class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Are you sure you want to delete this holiday?');">
+
+                                                    Delete
+
+                                                </button>
+
+                                            </form>
+
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

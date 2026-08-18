@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EmployeePortalApp</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/EmployeePortalApp.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Employee Admin Portal</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Employee" asp-action="NewEmployee">Create Employee</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Employee" asp-action="EmployeeList">Employee List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Departments" asp-action="NewDepartments">Create Department</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Departments" asp-action="DepartmentsList">Departments List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="JobTitle" asp-action="CreateJobTitle">Create Job Title</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="JobTitle" asp-action="JobTitleList">Job Title List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Holiday" asp-action="NewHoliday">Create Holiday</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Holiday" asp-action="HolidayList">Holiday List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Policy" asp-action="NewPolicy">Create Policy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Policy" asp-action="PolicyList">Policy List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="HRRequest" asp-action="AdminRequests">HRRequset List</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - EmployeePortalApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

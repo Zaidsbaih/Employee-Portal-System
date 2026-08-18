@@ -1,0 +1,114 @@
+﻿@{
+    bool isManager =
+        Context.Session.GetString("IsManager") == "True";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+
+<body>
+
+    <div class="d-flex">
+
+        <!-- Sidebar -->
+        <div class="bg-dark text-white d-flex flex-column align-items-center py-4"
+             style="width:90px; min-height:100vh;">
+
+            <!-- Logo -->
+            <div class="mb-5">
+                <i class="bi bi-buildings-fill text-warning fs-2"></i>
+            </div>
+
+            <!-- Dashboard -->
+            <a asp-controller="Employee"
+               asp-action="Dashboard"
+               class="btn btn-warning rounded-circle mb-4">
+                <i class="bi bi-house-fill"></i>
+            </a>
+
+            <!-- Profile -->
+            <a asp-controller="MyProfile"
+               asp-action="MyProfile"
+               class="btn btn-warning rounded-circle mb-4">
+                <i class="bi bi-person-fill"></i>
+            </a>
+
+            <!-- Attendance -->
+            <a asp-controller="Attendance"
+               asp-action="AttendanceHistory"
+               class="btn btn-warning rounded-circle mb-4">
+                <i class="bi bi-calendar-check-fill"></i>
+            </a>
+
+            <!-- Leave -->
+            <a asp-controller="Leave"
+               asp-action="LeaveRequest"
+               class="btn btn-warning rounded-circle mb-4">
+                <i class="bi bi-airplane-fill"></i>
+            </a>
+            @if (isManager)
+            {
+                <a asp-controller="Leave"
+                   asp-action="ApprovalRequests"
+                   class="btn btn-warning rounded-circle mb-4"
+                   title="Approval Requests">
+
+                    <i class="bi bi-check2-square"></i>
+
+                </a>
+            }
+            <!-- Policies -->
+            <a asp-controller="Policy"
+               asp-action="Policies"
+               class="btn btn-warning rounded-circle mb-4"
+               title="Policies">
+
+                <i class="bi bi-file-earmark-text-fill"></i>
+            </a>
+
+            <!-- HR Requests -->
+            <a asp-controller="HRRequest"
+               asp-action="EmployeeRequests"
+               class="btn btn-warning rounded-circle mb-4">
+                <i class="bi bi-envelope-paper-fill"></i>
+            </a>
+
+            <!-- Logout -->
+            <form asp-controller="Employee"
+                  asp-action="Logout"
+                  method="post"
+                  class="mt-auto">
+
+                <button type="submit"
+                        class="btn btn-danger rounded-circle"
+                        title="Logout">
+
+                    <i class="bi bi-box-arrow-right"></i>
+
+                </button>
+
+            </form>
+            
+
+        </div>
+
+        <!-- Page Content -->
+        <div class="flex-grow-1 p-4">
+            @RenderBody()
+        </div>
+
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

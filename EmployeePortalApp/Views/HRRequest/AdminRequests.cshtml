@@ -1,0 +1,451 @@
+﻿@model HRRequestAdminVM
+
+@{
+    ViewData["Title"] = "HR Requests Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+    <div class="container-fluid p-4">
+
+
+        <!-- ========================================= -->
+        <!-- Header -->
+        <!-- ========================================= -->
+
+        <div class="mb-4">
+
+            <h2 class="fw-bold">
+                HR Requests Management
+            </h2>
+
+            <p class="text-muted">
+                Review and process employee HR requests.
+            </p>
+
+        </div>
+
+
+
+        <!-- ========================================= -->
+        <!-- Filters -->
+        <!-- ========================================= -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-body">
+
+                <h5 class="mb-3">
+                    Filter Requests
+                </h5>
+
+
+            <form asp-controller="HRRequest"
+                  asp-action="AdminRequests"
+                  method="get">
+
+                    <div class="row g-3">
+
+
+                        <!-- Employee -->
+                        <div class="col-md-4">
+
+                            <label class="form-label">
+                                Employee Name
+                            </label>
+
+                            <input type="text"
+                                   name="employeeName"
+                                   value="@Model.EmployeeName"
+                                   class="form-control"
+                                   placeholder="Search employee" />
+
+                        </div>
+
+
+                        <!-- Request Type -->
+                        <div class="col-md-3">
+
+                            <label class="form-label">
+                                Request Type
+                            </label>
+
+                            <select name="requestType"
+                                    class="form-select">
+
+                                <option value="">
+                                    All Types
+                                </option>
+
+                                <option value="Employment Certificate">
+                                    Employment Certificate
+                                </option>
+
+                                <option value="Salary Certificate">
+                                    Salary Certificate
+                                </option>
+
+                                <option value="Update Personal Information">
+                                    Update Personal Information
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Status -->
+                        <div class="col-md-3">
+
+                            <label class="form-label">
+                                Status
+                            </label>
+
+                            <select name="status"
+                                    class="form-select">
+
+                                <option value="">
+                                    All Status
+                                </option>
+
+                                <option value="New">
+                                    New
+                                </option>
+
+                                <option value="In Progress">
+                                    In Progress
+                                </option>
+
+                                <option value="Completed">
+                                    Completed
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Button -->
+                        <div class="col-md-2 d-flex align-items-end">
+
+                            <button type="submit"
+                                    class="btn btn-dark w-100">
+
+                                Filter
+
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ========================================= -->
+        <!-- Requests Table -->
+        <!-- ========================================= -->
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body">
+
+                <h5 class="mb-3">
+                    Employee HR Requests
+                </h5>
+
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-hover align-middle">
+
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>Employee</th>
+
+                                <th>Request Type</th>
+
+                                <th>Description</th>
+
+                                <th>Request Date</th>
+
+                                <th>Status</th>
+
+                                <th>HR Action</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            @if (Model.Requests == null ||
+                                 Model.Requests.Count == 0)
+                            {
+                                <tr>
+
+                                    <td colspan="6"
+                                        class="text-center text-muted p-4">
+
+                                        No HR Requests Found
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                            else
+                            {
+                                @foreach (HRRequestModel request in Model.Requests)
+                                {
+                                    <tr>
+
+
+                                        <!-- Employee -->
+                                        <td>
+
+                                            @request.EmployeeName
+
+                                        </td>
+
+
+                                        <!-- Request Type -->
+                                        <td>
+
+                                            @request.RequestType
+
+                                        </td>
+
+
+                                        <!-- Description -->
+                                        <td>
+
+                                            @if (string.IsNullOrEmpty(request.Description))
+                                            {
+                                                <span>-</span>
+                                            }
+                                            else
+                                            {
+                                                @request.Description
+                                            }
+
+                                        </td>
+
+
+                                        <!-- Request Date -->
+                                        <td>
+
+                                            @(request.RequestDate.ToString("dd MMMM yyyy"))
+
+                                        </td>
+
+
+                                        <!-- Status -->
+                                        <td>
+
+                                            @if (request.Status == "New")
+                                            {
+                                                <span class="badge bg-warning text-dark">
+
+                                                    New
+
+                                                </span>
+                                            }
+
+                                            else if (request.Status == "In Progress")
+                                            {
+                                                <span class="badge bg-primary">
+
+                                                    In Progress
+
+                                                </span>
+                                            }
+
+                                            else if (request.Status == "Completed")
+                                            {
+                                                <span class="badge bg-success">
+
+                                                    Completed
+
+                                                </span>
+                                            }
+
+                                        </td>
+
+
+
+                                        <!-- HR Action -->
+                                        <td style="min-width:300px;">
+
+
+                                            @if (request.Status != "Completed")
+                                            {
+
+                                            <form asp-controller="HRRequest"
+                                                  asp-action="UpdateRequest"
+                                                  method="post"
+                                                  enctype="multipart/form-data">
+
+
+                                                    <!-- ID -->
+                                                    <input type="hidden"
+                                                           name="requestId"
+                                                           value="@request.Id" />
+
+
+
+                                                    <!-- Status -->
+                                                    <div class="mb-2">
+
+                                                        <label class="form-label">
+                                                            Status
+                                                        </label>
+
+                                                        <select name="status"
+                                                                class="form-select form-select-sm">
+
+                                                            <option value="New">
+                                                                New
+                                                            </option>
+
+                                                            <option value="In Progress">
+                                                                In Progress
+                                                            </option>
+
+                                                            <option value="Completed">
+                                                                Completed
+                                                            </option>
+
+                                                        </select>
+
+                                                    </div>
+
+
+
+                                                    <!-- Comment -->
+                                                    <div class="mb-2">
+
+                                                        <label class="form-label">
+                                                            HR Comment
+                                                        </label>
+
+                                                        <input type="text"
+                                                               name="comment"
+                                                               value="@request.HRComment"
+                                                               class="form-control form-control-sm"
+                                                               placeholder="Enter HR comment" />
+
+                                                    </div>
+
+
+
+                                                    <!-- File -->
+                                                    <div class="mb-2">
+
+                                                        <label class="form-label">
+                                                            Attachment
+                                                        </label>
+
+                                                        <input type="file"
+                                                               name="attachmentFile"
+                                                               class="form-control form-control-sm" />
+
+                                                    </div>
+
+
+
+                                                    <!-- Update -->
+                                                    <button type="submit"
+                                                            class="btn btn-success btn-sm">
+
+                                                        Update Request
+
+                                                    </button>
+
+
+                                                </form>
+
+                                            }
+
+                                            else
+                                            {
+
+                                                <span class="badge bg-success">
+
+                                                    Completed
+
+                                                </span>
+
+
+                                                @if (!string.IsNullOrEmpty(request.HRComment))
+                                                {
+                                                    <div class="mt-2">
+
+                                                        <strong>
+                                                            Comment:
+                                                        </strong>
+
+                                                        @request.HRComment
+
+                                                    </div>
+                                                }
+
+
+                                                @if (!string.IsNullOrEmpty(request.AttachmentPath))
+                                                {
+                                                    <div class="mt-2">
+
+                                                        <a href="/hrrequests/@request.AttachmentPath"
+                                                           target="_blank"
+                                                           class="btn btn-outline-primary btn-sm">
+
+                                                            View Attachment
+
+                                                        </a>
+
+                                                    </div>
+                                                }
+
+                                            }
+
+
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            }
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+

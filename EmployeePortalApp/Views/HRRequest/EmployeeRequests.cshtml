@@ -1,0 +1,243 @@
+﻿@model HRRequestEmployeeVM
+
+@{
+    ViewData["Title"] = "HR Requests";
+    Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h2 class="fw-bold mb-1">
+            HR Requests
+        </h2>
+
+        <p class="text-muted mb-0">
+            Submit and track your HR requests.
+        </p>
+    </div>
+
+
+    <!-- Create Request -->
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <h5 class="mb-4">
+                Create HR Request
+            </h5>
+
+            <form asp-controller="HRRequest"
+                  asp-action="SubmitRequest"
+                  method="post">
+
+                <div class="mb-3">
+
+                    <label asp-for="NewRequest.RequestType"
+                           class="form-label">
+                        Request Type
+                    </label>
+
+                    <select asp-for="NewRequest.RequestType"
+                            class="form-select">
+
+                        <option value="">
+                            Select Request Type
+                        </option>
+
+                        <option value="Employment Certificate">
+                            Employment Certificate
+                        </option>
+
+                        <option value="Salary Certificate">
+                            Salary Certificate
+                        </option>
+
+                        <option value="Update Personal Information">
+                            Update Personal Information
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="NewRequest.RequestType"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label asp-for="NewRequest.Description"
+                           class="form-label">
+                        Description
+                    </label>
+
+                    <textarea asp-for="NewRequest.Description"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Enter request details">
+                    </textarea>
+
+                </div>
+
+
+                <div class="text-end">
+
+                    <button type="submit"
+                            class="btn btn-primary px-4">
+
+                        <i class="bi bi-send me-1"></i>
+                        Submit Request
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- History -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 p-4 pb-0">
+
+            <h5 class="mb-1">
+                My Request History
+            </h5>
+
+            <small class="text-muted">
+                View your previous HR requests and their status.
+            </small>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th>Request Type</th>
+                            <th>Description</th>
+                            <th>Request Date</th>
+                            <th>Status</th>
+                            <th>HR Comment</th>
+                            <th>Attachment</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.MyRequests == null ||
+                             Model.MyRequests.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="6"
+                                    class="text-center text-muted py-4">
+
+                                    No HR requests found.
+
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (HRRequestModel request in Model.MyRequests)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @request.RequestType
+                                    </td>
+
+                                    <td>
+                                        @(string.IsNullOrEmpty(request.Description)
+                                            ? "-"
+                                            : request.Description)
+                                    </td>
+
+                                    <td>
+                                        @request.RequestDate
+                                        .ToString("dd MMMM yyyy")
+                                    </td>
+
+                                    <td>
+
+                                        @if (request.Status == "New")
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                New
+                                            </span>
+                                        }
+                                        else if (request.Status == "In Progress")
+                                        {
+                                            <span class="badge bg-primary">
+                                                In Progress
+                                            </span>
+                                        }
+                                        else if (request.Status == "Completed")
+                                        {
+                                            <span class="badge bg-success">
+                                                Completed
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                    <td>
+                                        @(string.IsNullOrEmpty(request.HRComment)
+                                            ? "-"
+                                            : request.HRComment)
+                                    </td>
+
+                                    <td>
+
+                                        @if (!string.IsNullOrEmpty(
+                                            request.AttachmentPath))
+                                        {
+                                            <a href="~/hrrequests/@request.AttachmentPath"
+                                               target="_blank"
+                                               class="btn btn-outline-primary btn-sm">
+
+                                                <i class="bi bi-paperclip me-1"></i>
+                                                View File
+
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                No File
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

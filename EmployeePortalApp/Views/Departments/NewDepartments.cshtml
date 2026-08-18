@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model DepartmentsModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+<!doctype html>
+<head>
+    <title>
+        Department
+    </title>
+
+</head>
+<body>
+    
+    <div class="container vh-100 d-flex justify-content-center align-items-center">
+
+        <div class="card shadow p-4" style="width: 700px;">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">
+                    Create New Department
+                </h3>
+                <form asp-controller="Departments" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Department Name</label>
+                        <input type="text" class="form-control" asp-for="Name" placeholder="Enter Department name ">
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        @if (!ViewBag.IsEdit)
+                                {
+                            <input type="submit" value="Save Department" asp-action="SaveDepartment" class="btn btn-primary px-5" />
+
+                                }
+                                else
+                                {
+                            <input type="submit" value="Update Department" asp-action="UpdateDepartment" class="btn btn-primary px-5" />
+
+                                }
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

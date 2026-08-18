@@ -1,0 +1,105 @@
+﻿@model vmEmployee
+@using Microsoft.AspNetCore.Mvc.Rendering
+<!doctype html>
+<head>
+    <title>
+        New Employee
+    </title>
+
+</head>
+<body>
+    <div class="container vh-100 d-flex justify-content-center align-items-center">
+
+        <div class="card shadow p-4" style="width: 700px;">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">
+                    Create New Employee
+                </h3>
+                <form  method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="employeeModel.Id" />
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Full Name</label>
+                        <input asp-for="employeeModel.FullName" class="form-control"  placeholder="Enter employee full name ">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                        <input asp-for="employeeModel.Email" class="form-control"  placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="employeeModel.Phone"></label>
+                        <input asp-for="employeeModel.Phone" class="form-control" />
+                        <span asp-validation-for="employeeModel.Phone"></span>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Joining Date</label>
+                            <input type="date" asp-for="employeeModel.JoiningDate" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Department</label>
+                            <select asp-for="employeeModel.DepartmentId"
+                                    asp-items="@(new SelectList(Model.departmentsList, "Id", "Name"))"
+                                    class="form-select">
+                                <option value="">Select Department</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Job Title</label>
+                            <select asp-for="employeeModel.JobTitleId"
+                                    asp-items="@(new SelectList(Model.jobTitleList, "Id", "Title"))"
+                                    class="form-select">
+                                <option value="">Select Job Title</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Manager</label>
+                            <select asp-for="employeeModel.ManagerId"
+                                    asp-items="@(new SelectList(Model.ManagersList, "Id", "FullName"))"
+                                    class="form-select">
+                                <option value="">Select Manager</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="employeeModel.BirthDate"></label>
+
+                            <input asp-for="employeeModel.BirthDate"
+                                   type="date"
+                                   class="form-control" />
+
+                            <span asp-validation-for="employeeModel.BirthDate"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Profile Photo</label>
+                            <input type="file" name="Photo" class="form-control" accept="image/*">
+                        </div>
+                        <div class="col-md-6 mb-3 d-flex align-items-end">
+                            <div class="form-check form-switch">
+                                <input asp-for="employeeModel.IsActive" class="form-check-input" />
+                                <label class="form-check-label" for="IsActive">
+                                    Active Account
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        @if (!ViewBag.IsEdit)
+                                {
+                            <input type="submit" value="Save Employee" asp-action="SaveEmployee" class="btn btn-primary px-5">;
+                                }
+                                else
+                                {
+                            <input type="submit" value="Update Employee" asp-action="UpdateEmployee" class="btn btn-primary px-5">;
+                                }
+                            
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
