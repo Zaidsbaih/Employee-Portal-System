@@ -61,4 +61,11 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-**/wwwroot/lib/** linguist-vendored
+# Ignore all static files in wwwroot from statistics
+**/wwwroot/** linguist-vendored
+*.css linguist-vendored
+*.js linguist-vendored
+*.html linguist-vendored
+
+# Force Razor views (.cshtml) to be counted as C#
+*.cshtml linguist-language=C#
